@@ -1,0 +1,91 @@
+{
+_____________________________________________________________________________
+
+INSTAGRAM: @danilo.profit
+TIKTOK: @danilo.profit
+YOUTUBE: youtube.com/@clubedorobo
+_____________________________________________________________________________
+
+  .g8"""bgd `7MMF'      `7MMF'   `7MF'`7MM"""Yp, `7MM"""YMM
+.dP'     `M   MM          MM       M    MM    Yb   MM    `7
+dM'       `   MM          MM       M    MM    dP   MM   d
+MM            MM          MM       M    MM"""bg.   MMmmMM
+MM.           MM      ,   MM       M    MM    `Y   MM   Y  ,
+`Mb.     ,'   MM     ,M   YM.     ,M    MM    ,9   MM     ,M
+  `"bmmmd'  .JMMmmmmMMM    `bmmmmd"'  .JMMmmmd9  .JMMmmmmMMM
+
+`7MM"""Yb.     .g8""8q.
+  MM    `Yb. .dP'    `YM.
+  MM     `Mb dM'      `MM
+  MM      MM MM        MM
+  MM     ,MP MM.      ,MP
+  MM    ,dP' `Mb.    ,dP'
+.JMMmmmdP'     `"bmmd"'
+ 
+`7MM"""Mq.    .g8""8q.   `7MM"""Yp,   .g8""8q.
+  MM   `MM. .dP'    `YM.   MM    Yb .dP'    `YM.
+  MM   ,M9  dM'      `MM   MM    dP dM'      `MM
+  MMmmdM9   MM        MM   MM"""bg. MM        MM
+  MM  YM.   MM.      ,MP   MM    `Y MM.      ,MP
+  MM   `Mb. `Mb.    ,dP'   MM    ,9 `Mb.    ,dP'
+.JMML. .JMM.  `"bmmd"'   .JMMmmmd9    `"bmmd"'
+
+MMP""MM""YMM `7MM"""Mq.        db      `7MM"""Yb.   `7MM"""YMM  `7MM"""Mq.
+P'   MM   `7   MM   `MM.      ;MM:       MM    `Yb.   MM    `7    MM   `MM.
+     MM        MM   ,M9      ,V^MM.      MM     `Mb   MM   d      MM   ,M9
+     MM        MMmmdM9      ,M  `MM      MM      MM   MMmmMM      MMmmdM9
+     MM        MM  YM.      AbmmmqMA     MM     ,MP   MM   Y  ,   MM  YM.
+     MM        MM   `Mb.   A'     VML    MM    ,dP'   MM     ,M   MM   `Mb.
+   .JMML.    .JMML. .JMM..AMA.   .AMMA..JMMmmmdP'   .JMMmmmmMMM .JMML. .JMM.
+_____________________________________________________________________________
+
+INSTAGRAM: @danilo.profit
+TIKTOK: @danilo.profit
+YOUTUBE: youtube.com/@clubedorobo
+_____________________________________________________________________________
+}
+
+VAR
+sinalC,sinalV,stopC,stopV : booleano;
+cor : inteiro;
+
+//VARIÁVEIS DA ESTRATÉGIA
+dirHiLo : float;// colocar aqui as variáveis necessárias <<----------
+
+BEGIN
+
+  //PASSO 1 | CARREGAR INDICADOR
+  dirHiLo:=HiloActivator(6)|1|; // colocar aqui os indicadores necessários <<----------
+  
+  //PASSO 2 | SINAIS DE ENTRADA
+  sinalC := (dirHiLo = 1) e (fechamento > abertura); //colocar aqui a configuração do sinal de entrada de compra <<---------- (Retirar a // do inicio da linha antes de editar)   
+  sinalV := (dirHiLo = 0) e (fechamento < abertura);  //colocar aqui a configuração do sinal de entrada de venda <<---------- (Retirar a // do inicio da linha antes de editar)
+  
+  //PASSO 3 | SINAIS DE SAÍDAS
+  stopC := (fechamento < abertura); //colocar aqui a configuração do sinal de saída de compra <<---------- (Retirar a // do inicio da linha antes de editar)  
+  stopV := (fechamento > abertura); //colocar aqui a configuração do sinal de saída de venda <<---------- (Retirar a // do inicio da linha antes de editar)
+
+  //========== NÃO MUDAR ABAIXO DESTA LINHA ==========
+  
+  //EXECUÇÃO DE ENTRADA
+  se (sinalC) e (not IsBought) e (not IsSold) entao BuyAtMarket;
+  se (sinalV) e (not IsBought) e (not IsSold) entao SellShortAtMarket;
+  
+  //EXECUÇÃO DE SAÍDA
+  se (IsBought) e (stopC) entao SellToCoverAtMarket;
+  se (IsSold) e (stopV) entao BuyToCoverAtMarket;
+  
+  //COLORAÇÃO
+  se sinalC entao cor:=cllime
+  senao se sinalV entao cor:=clred
+  senao cor:=clwhite;
+  
+  se (cor[1] = cllime) e (not stopC) entao cor:=cllime;
+  se (cor[1] = clred) e (not stopV) entao cor:=clred;
+  
+  PaintBar(cor);
+
+END;
+
+
+
